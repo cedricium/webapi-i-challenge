@@ -15,13 +15,14 @@ app.get('/', (req, res) => {
 app.post('/api/users', async (req, res) => {
   const { name, bio } = req.body
   if (!name || !bio) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       error: 'Please provide name and bio for the user.'
     })
   }
   try {
-    const user = await db.insert({ name, bio })
+    const { id } = await db.insert({ name, bio })
+    const user = await db.findById(id)
     res.status(201).json({
       success: true,
       user
