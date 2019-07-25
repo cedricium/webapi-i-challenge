@@ -34,6 +34,21 @@ app.post('/api/users', async (req, res) => {
   }
 })
 
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await db.find()
+    res.status(200).json({
+      success: true,
+      users
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'The users information could not be retrieved'
+    })
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`)
 })
