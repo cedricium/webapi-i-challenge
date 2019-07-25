@@ -49,6 +49,29 @@ app.get('/api/users', async (req, res) => {
   }
 })
 
+app.get('/api/users/:id', async (req, res) => {
+  const { id } = req.params
+  try {
+    const user = await db.findById(id)
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        error: `The user with the specified ID ${id} does not exist`
+      })
+    } else {
+      res.status(200).json({
+        success: true,
+        user
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'The user information could not be retrieved'
+    })
+  }
+})
+
 app.listen(PORT, () => {
   console.log(`server listening on port ${PORT}`)
 })
